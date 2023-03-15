@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @RequestMapping("/design")
@@ -42,6 +43,12 @@ class DesignTacoController {
 		model.addAttribute("taco", Taco())
 
 		return "design"
+	}
+
+	@PostMapping
+	fun processDesign(design: Taco): String {
+		log.info("Processing design: $design")
+		return "redirect:/orders/current"
 	}
 
 	private fun filterByType(ingredients: List<Ingredient>, type: Ingredient.Type): List<Ingredient> {
