@@ -40,7 +40,7 @@ class DesignTacoController {
 			)
 		}
 
-		model.addAttribute("taco", Taco())
+		model.addAttribute("taco", Taco("", listOf()))
 
 		return "design"
 	}

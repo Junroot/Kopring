@@ -1,9 +1,11 @@
 package junroot.study.tacos.web
 
+import jakarta.validation.Valid
 import junroot.study.tacos.Order
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.Errors
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,7 +24,11 @@ class OrderController {
 	}
 
 	@PostMapping
-	fun processOrder(order: Order): String {
+	fun processOrder(@Valid order: Order, errors: Errors): String {
+		if (errors.hasErrors()) {
+			log.info("Order has errors: $order")
+			return "orderForm"
+		}
 		log.info("Order submitted: $order")
 		return "redirect:/"
 	}
