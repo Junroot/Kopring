@@ -4,8 +4,11 @@ import jakarta.validation.constraints.Digits
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import org.hibernate.validator.constraints.CreditCardNumber
+import java.util.Date
 
 data class Order(
+	val id: Long?,
+	val placedAt: Date?,
 	@field:NotBlank(message = "Name is required")
 	val deliveryName: String?,
 	@field:NotBlank(message = "Street is required")
@@ -26,5 +29,5 @@ data class Order(
 	@field:Digits(integer = 3, fraction = 0, message = "Invalid CVV")
 	val ccCVV: String?
 ) {
-	constructor() : this(null, null, null, null, null, null, null, null)
+	constructor() : this(null, null, null, null, null, null, null, null, null, null)
 }
