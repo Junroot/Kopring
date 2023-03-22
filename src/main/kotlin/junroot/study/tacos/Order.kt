@@ -7,8 +7,8 @@ import org.hibernate.validator.constraints.CreditCardNumber
 import java.util.Date
 
 data class Order(
-	val id: Long?,
-	val placedAt: Date?,
+	var id: Long?,
+	var placedAt: Date?,
 	@field:NotBlank(message = "Name is required")
 	val deliveryName: String?,
 	@field:NotBlank(message = "Street is required")
@@ -27,7 +27,12 @@ data class Order(
 	)
 	val ccExpiration: String?,
 	@field:Digits(integer = 3, fraction = 0, message = "Invalid CVV")
-	val ccCVV: String?
+	val ccCVV: String?,
+	val tacos: MutableList<Taco> = ArrayList()
 ) {
+	fun addDesign(taco: Taco) {
+		tacos.add(taco)
+	}
+
 	constructor() : this(null, null, null, null, null, null, null, null, null, null)
 }

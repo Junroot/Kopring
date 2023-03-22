@@ -1,42 +1,45 @@
 package junroot.study.tacos.web
 
+import jakarta.validation.Valid
 import junroot.study.tacos.Ingredient
+import junroot.study.tacos.Order
 import junroot.study.tacos.Taco
 import junroot.study.tacos.data.IngredientRepository
+import junroot.study.tacos.data.TacoRepository
 import org.slf4j.LoggerFactory
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.Errors
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.SessionAttributes
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
+@SessionAttributes("order")
 @RequestMapping("/design")
 @Controller
 class DesignTacoController(
-	private val ingredientRepository: IngredientRepository
+	private val ingredientRepository: IngredientRepository,
+	private val tacoRepository: TacoRepository
 ) {
 
 	companion object {
 		val log = LoggerFactory.getLogger(DesignTacoController::class.java)
 	}
 
+	@ModelAttribute(name = "order")
+	fun order(): Order {
+		return Order()
+	}
+
 	@GetMapping
 	fun showDesignForm(model: Model): String {
-		//		val ingredients = listOf(
-		//			Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP),
-		//			Ingredient("COTO", "Corn Tortilla", Ingredient.Type.WRAP),
-		//			Ingredient("GRBF", "Ground Beef", Ingredient.Type.PROTEIN),
-		//			Ingredient("CARN", "Carnitas", Ingredient.Type.PROTEIN),
-		//			Ingredient("TMTO", "Diced Tomatoes", Ingredient.Type.VEGGIES),
-		//			Ingredient("LETC", "Lettuce", Ingredient.Type.VEGGIES),
-		//			Ingredient("CHED", "Cheddar", Ingredient.Type.CHEESE),
-		//			Ingredient("JACK", "Monterrey Jack", Ingredient.Type.CHEESE),
-		//			Ingredient("SLSA", "Salsa", Ingredient.Type.SAUCE),
-		//			Ingredient("SRCR", "Sour Cream", Ingredient.Type.SAUCE)
-		//		)
 		val ingredients = ingredientRepository.findAll().toList()
 
 		val types = Ingredient.Type.values()
@@ -53,8 +56,19 @@ class DesignTacoController(
 	}
 
 	@PostMapping
-	fun processDesign(design: Taco): String {
-		log.info("Processing design: $design")
+	fun processDesign(
+		@Valid design: Taco,
+		errors: Errors,
+		@ModelAttribute("order") order: Order
+	): String {
+		if (errors.hasErrors()) {
+			return "design"
+		}
+		log.info(design.toString())
+
+		val saved = tacoRepository.save(design)
+		order.addDesign(saved)
+
 		return "redirect:/orders/current"
 	}
 
