@@ -1,6 +1,5 @@
 package junroot.study.tacos.web
 
-import jakarta.validation.Valid
 import junroot.study.tacos.Order
 import junroot.study.tacos.data.OrderRepository
 import org.slf4j.LoggerFactory
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.SessionAttributes
 import org.springframework.web.bind.support.SessionStatus
+import javax.validation.Valid
 
 @SessionAttributes("order")
 @RequestMapping("/orders")

@@ -1,10 +1,10 @@
 package junroot.study.tacos
 
-import jakarta.validation.constraints.Digits
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.Pattern
 import org.hibernate.validator.constraints.CreditCardNumber
 import java.util.Date
+import javax.validation.constraints.Digits
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Pattern
 
 data class Order(
 	var id: Long?,

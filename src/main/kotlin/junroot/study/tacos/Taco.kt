@@ -1,8 +1,8 @@
 package junroot.study.tacos
 
-import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Size
 import java.util.*
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 data class Taco(
 	var id: Long? = null,
