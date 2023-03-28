@@ -1,6 +1,11 @@
+drop table Taco_Order;
+drop table Taco;
+drop table Ingredient;
+drop table taco_ingredients;
+
 create table if not exists Taco_Order (
-                                          id identity,
-                                          delivery_Name varchar(50) not null,
+    id identity,
+    delivery_Name varchar(50) not null,
     delivery_Street varchar(50) not null,
     delivery_City varchar(50) not null,
     delivery_State varchar(2) not null,
@@ -24,8 +29,8 @@ create table if not exists Ingredient (
     type varchar(10) not null
     );
 
-create table if not exists Taco_Ingredients (
-    taco bigint not null,
-    ingredient varchar(4) not null
+create table if not exists taco_ingredients (
+    taco_id bigint not null,
+    ingredients_id varchar(4) not null
 );
 

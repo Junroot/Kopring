@@ -1,7 +1,6 @@
 package junroot.study.tacos.data
 
 import junroot.study.tacos.Taco
+import org.springframework.data.repository.CrudRepository
 
-interface TacoRepository {
-	fun save(design: Taco): Taco
-}
+interface TacoRepository : CrudRepository<Taco, Long>

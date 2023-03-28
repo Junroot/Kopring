@@ -8,8 +8,13 @@ import org.springframework.stereotype.Component
 @Component
 class IngredientByIdConverter(
 	private val ingredientRepository: IngredientRepository
-): Converter<String, Ingredient> {
+) : Converter<String, Ingredient> {
 	override fun convert(id: String): Ingredient? {
-		return ingredientRepository.findById(id)
+		val optionalIngredient = ingredientRepository.findById(id)
+		return if (optionalIngredient.isPresent) {
+			optionalIngredient.get()
+		} else {
+			null
+		}
 	}
 }

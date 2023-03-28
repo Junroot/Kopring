@@ -1,10 +1,6 @@
 package junroot.study.tacos.data
 
 import junroot.study.tacos.Ingredient
+import org.springframework.data.repository.CrudRepository
 
-interface IngredientRepository {
-
-	fun findAll(): Iterable<Ingredient>
-	fun findById(id: String): Ingredient?
-	fun save(ingredient: Ingredient): Ingredient
-}
+interface IngredientRepository : CrudRepository<Ingredient, String>

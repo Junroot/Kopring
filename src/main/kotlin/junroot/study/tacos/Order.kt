@@ -1,12 +1,18 @@
 package junroot.study.tacos
 
 import org.hibernate.validator.constraints.CreditCardNumber
+import java.io.Serializable
 import java.util.Date
+import javax.persistence.*
 import javax.validation.constraints.Digits
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
 
-data class Order(
+@Entity
+@Table(name="Taco_Order")
+class Order(
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	var id: Long?,
 	var placedAt: Date?,
 	@field:NotBlank(message = "Name is required")
@@ -28,10 +34,22 @@ data class Order(
 	val ccExpiration: String?,
 	@field:Digits(integer = 3, fraction = 0, message = "Invalid CVV")
 	val ccCVV: String?,
+	@ManyToMany(targetEntity = Taco::class)
 	val tacos: MutableList<Taco> = ArrayList()
-) {
+) : Serializable {
+
+	companion object {
+		@JvmStatic
+		private val serialVersionUID = 1L
+	}
+
 	fun addDesign(taco: Taco) {
 		tacos.add(taco)
+	}
+
+	@PrePersist
+	fun placedAt() {
+		placedAt = Date()
 	}
 
 	constructor() : this(null, null, null, null, null, null, null, null, null, null)
