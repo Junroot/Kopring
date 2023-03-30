@@ -1,5 +1,6 @@
 package junroot.study.tacos.web
 
+import junroot.study.tacos.AsyncLogger
 import junroot.study.tacos.Ingredient
 import junroot.study.tacos.Order
 import junroot.study.tacos.Taco
@@ -22,7 +23,8 @@ import javax.validation.Valid
 @Controller
 class DesignTacoController(
 	private val ingredientRepository: IngredientRepository,
-	private val tacoRepository: TacoRepository
+	private val tacoRepository: TacoRepository,
+	private val asyncLogger: AsyncLogger
 ) {
 
 	companion object {
@@ -48,6 +50,8 @@ class DesignTacoController(
 
 		model.addAttribute("taco", Taco(1L, Date(), "", listOf()))
 
+		asyncLogger.log()
+		println("[${this::class}] ${Thread.currentThread().id}")
 		return "design"
 	}
 
