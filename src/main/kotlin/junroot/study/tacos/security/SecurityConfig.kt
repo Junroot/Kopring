@@ -3,13 +3,13 @@ package junroot.study.tacos.security
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.provisioning.InMemoryUserDetailsManager
+import org.springframework.security.provisioning.JdbcUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
+import javax.sql.DataSource
 
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfig(private val dataSource: DataSource) {
 
 	@Bean
 	fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -24,16 +24,9 @@ class SecurityConfig {
 
 	@Bean
 	fun userDetailService(): UserDetailsService {
-		val user1 = User.builder()
-			.username("user1")
-			.password("{noop}password1")
-			.authorities("ROLE_USER")
-			.build()
-		val user2 = User.builder()
-			.username("user2")
-			.password("{noop}password2")
-			.authorities("ROLE_USER")
-			.build()
-		return InMemoryUserDetailsManager(user1, user2)
+		val jdbcUserDetailsManager = JdbcUserDetailsManager(dataSource)
+		jdbcUserDetailsManager.setUsersByUsernameQuery("select username, password, enabled from users where username=?")
+		jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("select username, authority from authorities where username=?")
+		return jdbcUserDetailsManager
 	}
 }
