@@ -4,13 +4,14 @@ import junroot.study.tacos.Ingredient
 import junroot.study.tacos.data.IngredientRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 
 @SpringBootApplication
 class StudyApplication {
 	@Bean
-	fun dataLoader(repo: IngredientRepository) : CommandLineRunner {
+	fun dataLoader(repo: IngredientRepository): CommandLineRunner {
 		return CommandLineRunner {
 			repo.save(Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP))
 			repo.save(Ingredient("COTO", "Corn Tortilla", Ingredient.Type.WRAP))
