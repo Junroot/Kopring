@@ -1,7 +1,7 @@
-drop table Taco_Order;
-drop table Taco;
-drop table Ingredient;
-drop table taco_ingredients;
+drop table if exists Taco_Order;
+drop table if exists Taco;
+drop table if exists Ingredient;
+drop table if exists taco_ingredients;
 
 create table if not exists Taco_Order (
     id identity,
