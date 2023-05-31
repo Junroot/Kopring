@@ -6,23 +6,35 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
+import org.springframework.security.provisioning.JdbcUserDetailsManager
+import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
+import javax.sql.DataSource
 
 @EnableWebSecurity
 @Configuration
-class SecurityConfig {
+class SecurityConfig(
+	val dataSource: DataSource
+) {
 
 	@Bean
-	fun userDetailsService(passwordEncoder: PasswordEncoder): InMemoryUserDetailsManager {
+	fun userDetailsService(passwordEncoder: PasswordEncoder): UserDetailsManager {
 		val user: UserDetails = User.withUsername("user1")
 			.password("{noop}password1")
 			.authorities("ROLE_USER")
 			.build()
 
-		return InMemoryUserDetailsManager(user)
+		val jdbcUserDetailsManager = JdbcUserDetailsManager(dataSource).apply {
+			createUser(user)
+			setUsersByUsernameQuery("select username,password,enabled from users where username = ?")
+			setAuthoritiesByUsernameQuery("select username,authority from authorities where username = ?")
+		}
+
+		return jdbcUserDetailsManager
 	}
 
 	@Bean
@@ -33,7 +45,9 @@ class SecurityConfig {
 			.antMatchers("/", "/**")
 			.access("permitAll")
 			.and()
-			.httpBasic()
+			.csrf().ignoringAntMatchers("/h2-console/**")
+			.and()
+			.headers().frameOptions().sameOrigin()
 		return http.build()
 	}
 
