@@ -1,20 +1,20 @@
+drop table if exists Users;
 drop table if exists Taco_Order;
 drop table if exists Taco;
 drop table if exists Ingredient;
 drop table if exists taco_ingredients;
 
-create table users(
-      username varchar_ignorecase(50) not null primary key,
-      password varchar_ignorecase(500) not null,
-      enabled boolean not null
+create table Users (
+    `id` identity,
+    `username` varchar_ignorecase(50) not null,
+    `password` varchar_ignorecase(500) not null,
+    `fullname` varchar(50) not null,
+    `street` varchar(50) not null,
+    `city` varchar(50) not null,
+    `state` varchar(50) not null,
+    `zip` varchar(50) not null,
+    `phone_number` varchar(50) not null
 );
-
-create table authorities (
-     username varchar_ignorecase(50) not null,
-     authority varchar_ignorecase(50) not null,
-     constraint fk_authorities_users foreign key(username) references users(username)
-);
-create unique index ix_auth_username on authorities (username,authority);
 
 create table if not exists Taco_Order (
     id identity,
@@ -30,8 +30,8 @@ create table if not exists Taco_Order (
     );
 
 create table if not exists Taco (
-                                    id identity,
-                                    name varchar(50) not null,
+    id identity,
+    name varchar(50) not null,
     created_at timestamp not null
     );
 
