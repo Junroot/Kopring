@@ -5,15 +5,15 @@ drop table if exists Ingredient;
 drop table if exists taco_ingredients;
 
 create table Users (
-    `id` identity,
-    `username` varchar_ignorecase(50) not null,
-    `password` varchar_ignorecase(500) not null,
-    `fullname` varchar(50) not null,
-    `street` varchar(50) not null,
-    `city` varchar(50) not null,
-    `state` varchar(50) not null,
-    `zip` varchar(50) not null,
-    `phone_number` varchar(50) not null
+    id identity,
+    username varchar_ignorecase(50) not null,
+    password varchar_ignorecase(500) not null,
+    fullname varchar(50) not null,
+    street varchar(50) not null,
+    city varchar(50) not null,
+    state varchar(50) not null,
+    zip varchar(50) not null,
+    phone_number varchar(50) not null
 );
 
 create table if not exists Taco_Order (
@@ -26,7 +26,8 @@ create table if not exists Taco_Order (
     cc_number varchar(16) not null,
     cc_expiration varchar(5) not null,
     cc_cvv varchar(3) not null,
-    placed_at timestamp not null
+    placed_at timestamp not null,
+    user_id bigint not null
     );
 
 create table if not exists Taco (

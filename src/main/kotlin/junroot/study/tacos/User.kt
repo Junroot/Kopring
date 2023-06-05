@@ -10,7 +10,7 @@ import javax.persistence.*
 data class User(
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	val id: Long?,
+	val id: Long? = null,
 	private val username: String,
 	private val password: String,
 	val fullname: String,

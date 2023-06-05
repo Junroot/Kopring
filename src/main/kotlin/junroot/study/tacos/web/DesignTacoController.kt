@@ -3,9 +3,11 @@ package junroot.study.tacos.web
 import junroot.study.tacos.Ingredient
 import junroot.study.tacos.Order
 import junroot.study.tacos.Taco
+import junroot.study.tacos.User
 import junroot.study.tacos.data.IngredientRepository
 import junroot.study.tacos.data.TacoRepository
 import org.slf4j.LoggerFactory
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.Errors
@@ -35,7 +37,7 @@ class DesignTacoController(
 	}
 
 	@GetMapping
-	fun showDesignForm(model: Model): String {
+	fun showDesignForm(model: Model, @AuthenticationPrincipal user: User): String {
 		val ingredients = ingredientRepository.findAll().toList()
 
 		val types = Ingredient.Type.values()
@@ -47,6 +49,7 @@ class DesignTacoController(
 		}
 
 		model.addAttribute("taco", Taco(1L, Date(), "", listOf()))
+		model.addAttribute("user", user)
 
 		return "design"
 	}
