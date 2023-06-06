@@ -9,7 +9,7 @@ import javax.persistence.*
 @Entity
 data class User(
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long? = null,
 	private val username: String,
 	private val password: String,
