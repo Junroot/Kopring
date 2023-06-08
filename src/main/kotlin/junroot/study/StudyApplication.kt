@@ -4,11 +4,15 @@ import junroot.study.tacos.Ingredient
 import junroot.study.tacos.User
 import junroot.study.tacos.data.IngredientRepository
 import junroot.study.tacos.data.UserRepository
+import junroot.study.tacos.web.OrderProps
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 
+@ConfigurationPropertiesScan("junroot.study.tacos")
 @SpringBootApplication
 class StudyApplication {
 	@Bean
