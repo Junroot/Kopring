@@ -1,4 +1,10 @@
 spring:
+  sql:
+    init:
+      mode: always
+  config:
+    activate:
+      on-profile: prod
   datasource:
     url: jdbc:mysql://localhost:3306/test
     username: root
@@ -6,12 +12,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-  sql:
-    init:
-      mode: always
 logging:
   level:
-    root: WARN
+    root: INFO
     org.springframework.security: DEBUG
   file:
     path: /var/logs/
@@ -21,3 +24,35 @@ greeting:
 taco:
   orders:
     pageSize: 10
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+logging:
+  level:
+    root: INFO
+    tacos: WARN
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: root
+    password: password
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+logging:
+  level:
+    root: INFO
+    tacos: WARN
