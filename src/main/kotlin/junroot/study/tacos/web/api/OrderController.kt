@@ -6,6 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
+@RequestMapping("/orders")
 @CrossOrigin(origins = ["*"])
 @RestController
 class OrderController(

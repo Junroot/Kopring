@@ -1,5 +1,6 @@
 package junroot.study.tacos
 
+import org.springframework.hateoas.RepresentationModel
 import java.util.*
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -15,16 +16,16 @@ class Taco(
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	var id: Long? = null,
-	var createdAt: Date? = null,
+	var createdAt: Date,
 
 	@Size(min = 5, message = "Name must be at least 5 characters long")
 	@NotNull
-	val name: String? = null,
+	val name: String,
 
 	@ManyToMany(targetEntity = Ingredient::class)
 	@Size(min = 1, message = "You must choose at least 1 ingredient")
 	@NotNull
-	val ingredients: List<Ingredient>? = null
+	val ingredients: List<Ingredient>
 ) {
 	@PrePersist
 	fun createdAt() {
