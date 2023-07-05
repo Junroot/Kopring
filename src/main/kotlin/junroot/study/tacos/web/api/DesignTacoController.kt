@@ -22,13 +22,14 @@ class DesignTacoController(
 	@GetMapping("/recent")
 	fun recentTacos(): CollectionModel<TacoModel> {
 		val pageRequest = PageRequest.of(0, 12, Sort.by("createdAt").descending())
-		val tacos: Iterable<TacoModel> = tacoRepository.findAll(pageRequest)
+		val tacos = tacoRepository.findAll(pageRequest)
 			.content
-			.map { TacoModel(it) }
+		val tacoModels = TacoModelAssembler.toCollectionModel(tacos)
 
 		val link =
 			linkTo(methodOn(DesignTacoController::class.javaObjectType).recentTacos()).withRel("recents")
-		return CollectionModel.of(tacos, link)
+		tacoModels.add(link)
+		return tacoModels
 	}
 
 	@GetMapping("/{id}")
