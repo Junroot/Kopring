@@ -4,7 +4,7 @@ import junroot.study.tacos.Taco
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport
 
 object TacoModelAssembler : RepresentationModelAssemblerSupport<Taco, TacoModel>(
-	DesignTacoController::class.java,
+	RecentTacosController::class.java,
 	TacoModel::class.java
 ) {
 	override fun toModel(entity: Taco): TacoModel {

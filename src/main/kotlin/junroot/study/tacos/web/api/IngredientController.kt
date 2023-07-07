@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RequestMapping("/ingredients")
-@CrossOrigin(origins = ["*"])
-@RestController
+//@RequestMapping("/ingredients")
+//@CrossOrigin(origins = ["*"])
+//@RestController
 class IngredientController(
 	private val ingredientRepository: IngredientRepository
 ) {
 
-	@GetMapping("/{id}")
+//	@GetMapping("/{id}")
 	fun getIngredient(id: String): Ingredient {
 		return ingredientRepository.findByIdOrNull(id) ?: throw IllegalArgumentException()
 	}

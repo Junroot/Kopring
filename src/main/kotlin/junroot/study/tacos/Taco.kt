@@ -1,16 +1,12 @@
 package junroot.study.tacos
 
-import org.springframework.hateoas.RepresentationModel
+import org.springframework.data.rest.core.annotation.RestResource
 import java.util.*
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.ManyToMany
-import javax.persistence.PrePersist
+import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
+@RestResource(rel="tacos", path="tacos")
 @Entity
 class Taco(
 	@Id

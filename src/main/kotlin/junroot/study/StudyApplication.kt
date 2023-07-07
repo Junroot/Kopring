@@ -54,6 +54,14 @@ class StudyApplication {
 				)
 			)
 
+			repeat(30) {
+				tacoRepository.save(Taco(
+					null,
+					Date(),
+					"tacoName",
+					ingredients = listOf(ingredient1, ingredient2)
+				))
+			}
 			val taco = tacoRepository.save(Taco(
 				null,
 				Date(),
