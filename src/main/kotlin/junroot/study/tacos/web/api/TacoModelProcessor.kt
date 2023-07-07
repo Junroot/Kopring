@@ -3,7 +3,6 @@ package junroot.study.tacos.web.api
 import junroot.study.tacos.Taco
 import org.springframework.hateoas.EntityModel
 import org.springframework.hateoas.PagedModel
-import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.EntityLinks
 import org.springframework.hateoas.server.RepresentationModelProcessor
 import org.springframework.stereotype.Component
