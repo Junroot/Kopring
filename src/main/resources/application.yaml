@@ -56,3 +56,13 @@ logging:
   level:
     root: INFO
     tacos: WARN
+server:
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: "/dev"
+      prefix: stdout
+      buffered: false
+      suffix:
+      file-date-format:
+      pattern: common
