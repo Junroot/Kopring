@@ -42,6 +42,10 @@ logging:
     tacos: WARN
 ---
 spring:
+  activemq:
+    broker-url: tcp://127.0.0.1:61616
+    user: admin
+    password: admin
   data:
     rest:
       base-path: /api
@@ -52,6 +56,9 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+  jms:
+    template:
+      default-destination: tacocloud.order.queue
 logging:
   level:
     root: INFO

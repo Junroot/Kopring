@@ -8,6 +8,8 @@ import junroot.study.tacos.data.IngredientRepository
 import junroot.study.tacos.data.OrderRepository
 import junroot.study.tacos.data.TacoRepository
 import junroot.study.tacos.data.UserRepository
+import junroot.study.tacos.messaging.JmsOrderMessagingService
+import junroot.study.tacos.messaging.OrderMessagingService
 import junroot.study.tacos.web.OrderProps
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -26,7 +28,8 @@ class StudyApplication {
 		ingredientRepository: IngredientRepository,
 		userRepository: UserRepository,
 		tacoRepository: TacoRepository,
-		orderRepository: OrderRepository
+		orderRepository: OrderRepository,
+		jmsOrderMessagingService: OrderMessagingService,
 	): CommandLineRunner {
 		return CommandLineRunner {
 			val ingredient1 = ingredientRepository.save(Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP))
@@ -69,7 +72,7 @@ class StudyApplication {
 				ingredients = listOf(ingredient1, ingredient2)
 			))
 
-			orderRepository.save(Order(
+			val order = Order(
 				null,
 				Date(),
 				"dateName",
@@ -82,7 +85,9 @@ class StudyApplication {
 				"cvv",
 				user,
 				mutableListOf(taco)
-			))
+			)
+			orderRepository.save(order)
+			jmsOrderMessagingService.sendOrder(order)
 		}
 	}
 }

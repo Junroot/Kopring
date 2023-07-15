@@ -1,15 +1,12 @@
 package junroot.study.tacos
 
-import org.hibernate.validator.constraints.CreditCardNumber
 import java.io.Serializable
-import java.util.Date
+import java.util.*
 import javax.persistence.*
-import javax.validation.constraints.Digits
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.Pattern
 
 @Entity
-@Table(name="Taco_Order")
+@Table(name = "Taco_Order")
 class Order(
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +22,17 @@ class Order(
 	var deliveryState: String,
 	@field:NotBlank(message = "Zip is required")
 	var deliveryZip: String,
-//	@field:CreditCardNumber(message = "Not a valid credit card number")
+	//	@field:CreditCardNumber(message = "Not a valid credit card number")
 	var ccNumber: String,
-//	@field:Pattern(
-//		regexp = "^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$",
-//		message = "Must be formatted MM/YY"
-//	)
+	//	@field:Pattern(
+	//		regexp = "^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$",
+	//		message = "Must be formatted MM/YY"
+	//	)
 	var ccExpiration: String,
-//	@field:Digits(integer = 3, fraction = 0, message = "Invalid CVV")
+	//	@field:Digits(integer = 3, fraction = 0, message = "Invalid CVV")
 	var ccCVV: String,
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	var user: User,
 	@ManyToMany(targetEntity = Taco::class)
 	val tacos: MutableList<Taco> = ArrayList()

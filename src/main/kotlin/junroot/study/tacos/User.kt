@@ -1,5 +1,6 @@
 package junroot.study.tacos
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -20,6 +21,8 @@ data class User(
 	val zip: String,
 	val phoneNumber: String
 ) : UserDetails {
+
+	@JsonIgnore
 	override fun getAuthorities(): Collection<GrantedAuthority> {
 		return mutableListOf(SimpleGrantedAuthority("ROLE_USER"))
 	}
