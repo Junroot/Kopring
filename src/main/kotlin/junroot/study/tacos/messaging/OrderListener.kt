@@ -1,8 +1,9 @@
 package junroot.study.tacos.messaging
 
 import junroot.study.tacos.Order
+import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.LoggerFactory
-import org.springframework.jms.annotation.JmsListener
+import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
 
 @Component
@@ -12,8 +13,9 @@ class OrderListener {
 		private val logger = LoggerFactory.getLogger(OrderListener::class.java)
 	}
 
-	@JmsListener(destination = "tacocloud.order.queue")
-	fun receiveOrder(order: Order) {
+	@KafkaListener(topics = ["tacocloud.orders.topic"], groupId = "foo")
+	fun receiveOrder(order: Order, record: ConsumerRecord<String, Order>) {
+		logger.info("Received from partition {} with timestamp {}", record.partition(), record.timestamp())
 		logger.info(order.deliveryName)
 	}
 }

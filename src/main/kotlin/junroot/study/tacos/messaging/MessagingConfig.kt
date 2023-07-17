@@ -1,30 +1,40 @@
 package junroot.study.tacos.messaging
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import junroot.study.tacos.Order
-import org.apache.activemq.command.ActiveMQQueue
+import org.apache.kafka.clients.producer.ProducerConfig
+import org.springframework.amqp.core.Queue
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
+import org.springframework.amqp.support.converter.MessageConverter
+import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter
-import javax.jms.Destination
+import org.springframework.kafka.annotation.EnableKafka
+import org.springframework.kafka.core.DefaultKafkaProducerFactory
+import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.kafka.core.ProducerFactory
+import org.springframework.kafka.support.serializer.JsonSerializer
 
+@EnableKafka
 @Configuration
 class MessagingConfig {
+
 	@Bean
-	fun orderQueue(): Destination {
-		return ActiveMQQueue("tacocloud.order.queue")
+	fun orderQueue(): Queue {
+		return Queue("tacocloud.order.queue", false)
 	}
 
 	@Bean
-	fun messageConverter(objectMapper: ObjectMapper): MappingJackson2MessageConverter {
-		return MappingJackson2MessageConverter().apply {
-			setObjectMapper(objectMapper)
-			setTypeIdPropertyName("_typeId")
-			setTypeIdMappings(
-				mapOf<String, Class<*>>(
-					"order" to Order::class.java
-				)
-			)
-		}
+	fun producerFactory(): ProducerFactory<String, Any> {
+		val props = mapOf<String, Any>(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JsonSerializer::class.java)
+		return DefaultKafkaProducerFactory(props)
+	}
+
+	@Bean
+	fun kafkaTemplate(): KafkaTemplate<String, Any> {
+		return KafkaTemplate(producerFactory())
+	}
+
+	@Bean
+	fun messageConverter(): MessageConverter {
+		return Jackson2JsonMessageConverter()
 	}
 }

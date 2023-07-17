@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import javax.jms.Destination
 import javax.jms.Message
 
-@Service
+// @Service
 class JmsOrderMessagingService(
 	private val jmsTemplate: JmsTemplate,
 	private val orderQueue: Destination

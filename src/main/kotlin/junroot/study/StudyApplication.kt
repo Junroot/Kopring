@@ -1,5 +1,6 @@
 package junroot.study
 
+import com.rabbitmq.client.ConnectionFactory
 import junroot.study.tacos.Ingredient
 import junroot.study.tacos.Order
 import junroot.study.tacos.Taco
@@ -9,7 +10,9 @@ import junroot.study.tacos.data.OrderRepository
 import junroot.study.tacos.data.TacoRepository
 import junroot.study.tacos.data.UserRepository
 import junroot.study.tacos.messaging.JmsOrderMessagingService
+import junroot.study.tacos.messaging.KafkaOrderMessagingService
 import junroot.study.tacos.messaging.OrderMessagingService
+import junroot.study.tacos.messaging.RabbitOrderMessagingService
 import junroot.study.tacos.web.OrderProps
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -29,7 +32,7 @@ class StudyApplication {
 		userRepository: UserRepository,
 		tacoRepository: TacoRepository,
 		orderRepository: OrderRepository,
-		jmsOrderMessagingService: OrderMessagingService,
+		kafkaOrderMessagingService: KafkaOrderMessagingService
 	): CommandLineRunner {
 		return CommandLineRunner {
 			val ingredient1 = ingredientRepository.save(Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP))
@@ -87,7 +90,8 @@ class StudyApplication {
 				mutableListOf(taco)
 			)
 			orderRepository.save(order)
-			jmsOrderMessagingService.sendOrder(order)
+
+			kafkaOrderMessagingService.sendOrder(order)
 		}
 	}
 }
