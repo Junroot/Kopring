@@ -1,6 +1,5 @@
 package junroot.study
 
-import com.rabbitmq.client.ConnectionFactory
 import junroot.study.tacos.Ingredient
 import junroot.study.tacos.Order
 import junroot.study.tacos.Taco
@@ -9,18 +8,11 @@ import junroot.study.tacos.data.IngredientRepository
 import junroot.study.tacos.data.OrderRepository
 import junroot.study.tacos.data.TacoRepository
 import junroot.study.tacos.data.UserRepository
-import junroot.study.tacos.messaging.JmsOrderMessagingService
-import junroot.study.tacos.messaging.KafkaOrderMessagingService
-import junroot.study.tacos.messaging.OrderMessagingService
-import junroot.study.tacos.messaging.RabbitOrderMessagingService
-import junroot.study.tacos.web.OrderProps
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
-import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import java.text.SimpleDateFormat
 import java.util.*
 
 @ConfigurationPropertiesScan("junroot.study.tacos")
@@ -32,7 +24,6 @@ class StudyApplication {
 		userRepository: UserRepository,
 		tacoRepository: TacoRepository,
 		orderRepository: OrderRepository,
-		kafkaOrderMessagingService: KafkaOrderMessagingService
 	): CommandLineRunner {
 		return CommandLineRunner {
 			val ingredient1 = ingredientRepository.save(Ingredient("FLTO", "Flour Tortilla", Ingredient.Type.WRAP))
@@ -61,19 +52,23 @@ class StudyApplication {
 			)
 
 			repeat(30) {
-				tacoRepository.save(Taco(
+				tacoRepository.save(
+					Taco(
+						null,
+						Date(),
+						"tacoName",
+						ingredients = listOf(ingredient1, ingredient2)
+					)
+				)
+			}
+			val taco = tacoRepository.save(
+				Taco(
 					null,
 					Date(),
 					"tacoName",
 					ingredients = listOf(ingredient1, ingredient2)
-				))
-			}
-			val taco = tacoRepository.save(Taco(
-				null,
-				Date(),
-				"tacoName",
-				ingredients = listOf(ingredient1, ingredient2)
-			))
+				)
+			)
 
 			val order = Order(
 				null,
@@ -90,8 +85,6 @@ class StudyApplication {
 				mutableListOf(taco)
 			)
 			orderRepository.save(order)
-
-			kafkaOrderMessagingService.sendOrder(order)
 		}
 	}
 }

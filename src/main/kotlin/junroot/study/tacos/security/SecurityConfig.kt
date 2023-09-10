@@ -2,6 +2,7 @@ package junroot.study.tacos.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -18,6 +19,8 @@ class SecurityConfig {
 			.hasRole("USER")
 			.antMatchers("/", "/**")
 			.permitAll()
+			.antMatchers(HttpMethod.POST, "/test")
+			.permitAll()
 			.and()
 			.formLogin()
 			.loginPage("/login")
@@ -30,6 +33,7 @@ class SecurityConfig {
 			.and()
 			.csrf()
 				.ignoringAntMatchers("/h2-console/**")
+				.ignoringAntMatchers("/test")
 			.and()
 			.headers().frameOptions().sameOrigin()
 		return http.build()

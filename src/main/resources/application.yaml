@@ -56,14 +56,6 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-  jms:
-    template:
-      default-destination: tacocloud.order.queue
-  kafka:
-    bootstrap-servers:
-      - localhost:9092
-    template:
-      default-topic: tacocloud.orders.topic
   rabbitmq:
     template:
       receive-timeout: 5000

@@ -1,7 +1,6 @@
 package junroot.study.tacos.data
 
 import junroot.study.tacos.Taco
-import org.springframework.data.repository.CrudRepository
-import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.data.repository.reactive.ReactiveCrudRepository
 
-interface TacoRepository : PagingAndSortingRepository<Taco, Long>
+interface TacoRepository : ReactiveCrudRepository<Taco, Long>
